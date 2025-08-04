@@ -1,0 +1,38 @@
+# Folders and files to ignore from git
+#
+# For a more comprehensive list, please see
+# https://github.com/github/gitignore/blob/main/Android.gitignore
+
+# Built application files
+*.apk
+*.aab
+*.ap_
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Built C/C++ libraries
+*.so
+
+# Folders that should be ignored
+/build
+/captures
+.externalNativeBuild
+.gradle
+/local.properties
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. for Firebase)
+google-services.json
+
+# Other
+.DS_Store
