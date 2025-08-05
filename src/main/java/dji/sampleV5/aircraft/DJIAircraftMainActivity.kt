@@ -15,7 +15,7 @@ import org.ros.node.NodeMainExecutor
 
 
 //import org.ros.rosjava_tutorial_pubsub.Listener
-
+import java.net.URI
 /**
  * Class Description
  *
@@ -24,7 +24,7 @@ import org.ros.node.NodeMainExecutor
  *
  * Copyright (c) 2022, DJI All Rights Reserved.
  */
-class DJIAircraftMainActivity : RosActivity("Pubsub Tutorial", "Pubsub Tutorial") {
+class DJIAircraftMainActivity : RosActivity("Pubsub Tutorial", "Pubsub Tutorial",  URI.create("http://192.168.3.139:11311")) {
     private var talker: Talker? = null
     private var listener: Listener? = null
     private var server: Server? = null
@@ -47,10 +47,11 @@ class DJIAircraftMainActivity : RosActivity("Pubsub Tutorial", "Pubsub Tutorial"
         server = Server()
 
         //nodeMainExecutorService.rosHostname = "192.168.43.129"
+        if(masterUri.toString() != "http://192.168.3.139:11311"){nodeMainExecutorService.rosHostname = "192.168.43.129"}
         val nodeConfiguration = NodeConfiguration.newPublic(rosHostname)
 
         nodeConfiguration.setMasterUri(masterUri)
-        if(masterUri.toString() != "http://192.163.3.139:11311"){nodeMainExecutorService.rosHostname = "192.168.43.129"}
+
         nodeMainExecutor?.execute(listener, nodeConfiguration)
         nodeMainExecutor?.execute(talker, nodeConfiguration)
         nodeMainExecutor?.execute(server, nodeConfiguration)

@@ -2,6 +2,7 @@ package dji.sampleV5.aircraft;
 
 //import androidx.appcompat.app.AppCompatActivity;
 //import android.app.Activity;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -11,6 +12,7 @@ import android.os.IBinder;
 import com.google.common.base.Preconditions;
 
 import org.ros.address.InetAddressFactory;
+import org.ros.android.NodeMainExecutorService;
 import org.ros.exception.RosRuntimeException;
 import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
@@ -20,6 +22,7 @@ import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import androidx.core.content.ContextCompat;
 /**
  * @author damonkohler@google.com (Damon Kohler)
  */
@@ -32,7 +35,7 @@ public abstract class RosActivity extends DJIMainActivity {
     private final String notificationTitle;
     private Class<?> masterChooserActivity = MasterChooser.class;
     private int masterChooserRequestCode = MASTER_CHOOSER_REQUEST_CODE;
-    protected NodeMainExecutorService nodeMainExecutorService;
+    protected org.ros.android.NodeMainExecutorService nodeMainExecutorService;
     private Boolean shutdownSignalReceived = false;
 
     /**
@@ -96,7 +99,7 @@ public abstract class RosActivity extends DJIMainActivity {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
-            nodeMainExecutorService = ((NodeMainExecutorService.LocalBinder) binder).getService();
+            nodeMainExecutorService = ((org.ros.android.NodeMainExecutorService.LocalBinder) binder).getService();
 
             if (customMasterUri != null) {
                 nodeMainExecutorService.setMasterUri(customMasterUri);
@@ -105,7 +108,7 @@ public abstract class RosActivity extends DJIMainActivity {
 
             serviceListener = new NodeMainExecutorServiceListener() {
                 @Override
-                public void onShutdown(NodeMainExecutorService nodeMainExecutorService) {
+                public void onShutdown(org.ros.android.NodeMainExecutorService nodeMainExecutorService) {
                     // We may have added multiple shutdown listeners and we only want to
                     // call finish() once.
                     if (!RosActivity.this.isFinishing()) {
@@ -183,11 +186,12 @@ public abstract class RosActivity extends DJIMainActivity {
     }
 
     protected void bindNodeMainExecutorService() {
-        Intent intent = new Intent(this, NodeMainExecutorService.class);
-        intent.setAction(NodeMainExecutorService.ACTION_START);
-        intent.putExtra(NodeMainExecutorService.EXTRA_NOTIFICATION_TICKER, notificationTicker);
-        intent.putExtra(NodeMainExecutorService.EXTRA_NOTIFICATION_TITLE, notificationTitle);
-        startService(intent);
+        Intent intent = new Intent(this, org.ros.android.NodeMainExecutorService.class);
+        intent.setAction(org.ros.android.NodeMainExecutorService.ACTION_START);
+        intent.putExtra(org.ros.android.NodeMainExecutorService.EXTRA_NOTIFICATION_TICKER, notificationTicker);
+        intent.putExtra(org.ros.android.NodeMainExecutorService.EXTRA_NOTIFICATION_TITLE, notificationTitle);
+        //startService(intent);
+        ContextCompat.startForegroundService(this, intent);
         Preconditions.checkState(
                 bindService(intent, nodeMainExecutorServiceConnection, BIND_AUTO_CREATE),
                 "Failed to bind NodeMainExecutorService.");

@@ -31,6 +31,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
  *
  * Copyright (c) 2022, DJI All Rights Reserved.
  */
+
 abstract class DJIMainActivity : AppCompatActivity() {
 
     val tag: String = LogUtils.getTag(this)

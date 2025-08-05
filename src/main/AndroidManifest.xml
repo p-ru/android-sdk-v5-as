@@ -106,7 +106,9 @@
         <!-- ROS related, specify External Access for org.ros.android.NodeMainExecutorService-->
         <service
             android:name="org.ros.android.NodeMainExecutorService"
-            android:exported="false" />
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
 
 </application>

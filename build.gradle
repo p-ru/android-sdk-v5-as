@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace = "dji.sampleV5.aircraft"
+
     compileSdkVersion Integer.parseInt(project.ANDROID_COMPILE_SDK_VERSION)
 
     defaultConfig {
@@ -50,12 +52,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_11
         freeCompilerArgs += ["-Xjvm-default=all"]
     }
 
@@ -98,6 +100,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    // For Duplicate Java Resources (mergeDebugJavaResource FAILED)
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
@@ -129,24 +136,77 @@ dependencies {
     kapt deps.glidecompiler
     implementation deps.lynx
 
+
+
+
+
+
+
+    implementation("io.netty:netty:3.10.6.Final")
+
     // Add rosjava dependencies
+    implementation(group: 'org.ros.rosjava_core', name: 'rosjava', version: '0.3.6') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+
+    implementation (group: 'org.ros.android_core', name: 'android_core_components', version: '0.4.0'){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
 
 
 
-    implementation(group: 'org.ros.rosjava_core', name: 'rosjava', version: '0.3.6') {exclude group: 'com.google.guava', module: 'guava'}
-    //implementation(group: 'org.ros.android_core', name: 'android_15', version: '0.3.3')
-    //implementation (group: 'org.ros2.rcljava', name: 'org.ros2.rcljava.gradle.plugin', version: '0.6.0', ext: 'pom')
-    implementation (group: 'org.ros.android_core', name: 'android_core_components', version: '0.4.0'){exclude group: 'com.google.guava', module: 'guava'}
-    implementation (group: 'org.ros.rosjava_core', name: 'rosjava_tutorial_pubsub', version: '0.3.6'){exclude group: 'com.google.guava', module: 'guava'}
-    implementation (group: 'org.ros.rosjava_bootstrap', name: 'gradle_plugins', version: '0.3.3') {exclude group: 'com.google.guava', module: 'guava'}
 
-    implementation (group: 'org.ros.rosjava_messages', name: 'geometry_msgs', version: '1.12.7'){exclude group: 'com.google.guava', module: 'guava'}
-    implementation (group: 'org.ros.rosjava_messages', name: 'sensor_msgs', version: '1.12.7'){exclude group: 'com.google.guava', module: 'guava'}
-    implementation (group: 'org.ros.rosjava_messages', name: 'std_msgs', version: '0.5.11'){exclude group: 'com.google.guava', module: 'guava'}
-    implementation (group: 'org.ros.rosjava_bootstrap', name: 'message_generation', version: '0.3.3') {exclude group: 'com.google.guava', module: 'guava'}
-    implementation (group: 'org.ros.rosjava_messages', name: 'std_srvs', version: '1.11.2') {exclude group: 'com.google.guava', module: 'guava'}
+
+    implementation (group: 'org.ros.rosjava_core', name: 'rosjava_tutorial_pubsub', version: '0.3.6'){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+    implementation (group: 'org.ros.rosjava_bootstrap', name: 'gradle_plugins', version: '0.3.3') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+
+    implementation (group: 'org.ros.rosjava_messages', name: 'geometry_msgs', version: '1.12.7'){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+    implementation (group: 'org.ros.rosjava_messages', name: 'sensor_msgs', version: '1.12.7'){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+    implementation (group: 'org.ros.rosjava_messages', name: 'std_msgs', version: '0.5.11'){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+
+    implementation (group: 'org.ros.rosjava_messages', name: 'control_msgs', version: '1.5.0'){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+
+    implementation (group: 'org.ros.rosjava_bootstrap', name: 'message_generation', version: '0.3.3') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+    implementation (group: 'org.ros.rosjava_messages', name: 'std_srvs', version: '1.11.2') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+    implementation (group: 'com.github.rosjava', name: 'rosjava_actionlib', version: '2024.04.04.01') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+
+
+
+    implementation (group: 'org.ros.rosjava_messages', name: 'actionlib_msgs', version: '1.12.7') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
+
+
     implementation 'com.google.guava:guava:32.1.2-android'
-    //implementation (group: 'org.ros.rosjava_messages', name: 'polled_camera', version: '1.11.13') {exclude group: 'com.google.guava', module: 'guava'}
-
 
 }
