@@ -108,6 +108,8 @@ android {
 }
 
 dependencies {
+
+
     /** <-----------------依赖MSDK--------------------> **/
     compileOnly deps.aircraftProvided
     implementation deps.aircraft
@@ -198,7 +200,11 @@ dependencies {
         exclude group: 'com.google.guava', module: 'guava'
         exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
     }
-
+    //dji_srvs
+    implementation (group: 'org.ros.rosjava_messages', name: 'dji_srvs', version: '0.1.0') {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+    }
 
 
     implementation (group: 'org.ros.rosjava_messages', name: 'actionlib_msgs', version: '1.12.7') {
@@ -206,7 +212,9 @@ dependencies {
         exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
     }
 
-
+    //implementation files('libs/dji_srvs/0.1.0/dji_srvs-0.1.0.jar')
     implementation 'com.google.guava:guava:32.1.2-android'
 
 }
+
+

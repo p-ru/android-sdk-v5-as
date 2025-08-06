@@ -2,25 +2,18 @@ package dji.sampleV5.aircraft
 
 
 
-import androidx.lifecycle.MutableLiveData
-import dji.sampleV5.aircraft.models.VirtualStickVM.RCStickValue
-import dji.sampleV5.aircraft.models.VirtualStickVM.VirtualStickStateInfo
 import dji.sdk.keyvalue.key.FlightControllerKey
+import dji.sdk.keyvalue.key.GimbalKey
 import dji.sdk.keyvalue.value.common.EmptyMsg
-import dji.sdk.keyvalue.value.flightcontroller.FlightControlAuthorityChangeReason
-import dji.sdk.keyvalue.value.flightcontroller.FlightCoordinateSystem
-import dji.sdk.keyvalue.value.flightcontroller.RollPitchControlMode
-import dji.sdk.keyvalue.value.flightcontroller.VerticalControlMode
 import dji.sdk.keyvalue.value.flightcontroller.VirtualStickFlightControlParam
-import dji.sdk.keyvalue.value.flightcontroller.YawControlMode
+import dji.sdk.keyvalue.value.gimbal.GimbalAngleRotation
+import dji.sdk.keyvalue.value.gimbal.GimbalAngleRotationMode
 import dji.v5.common.callback.CommonCallbacks
 import dji.v5.common.error.IDJIError
 import dji.v5.et.action
 import dji.v5.et.create
 import dji.v5.manager.KeyManager
 import dji.v5.manager.aircraft.virtualstick.VirtualStickManager
-import dji.v5.manager.aircraft.virtualstick.VirtualStickState
-import dji.v5.manager.aircraft.virtualstick.VirtualStickStateListener
 
 class AircraftControl {
 
@@ -59,6 +52,16 @@ class AircraftControl {
     fun sendVirtualStickAdvancedParam(param: VirtualStickFlightControlParam) {
         VirtualStickManager.getInstance().sendVirtualStickAdvancedParam(param)
     }
+
+
+    fun setGimbal(gimbalParam: GimbalAngleRotation, callback: CommonCallbacks.CompletionCallbackWithParam<EmptyMsg>) {
+        GimbalKey.KeyRotateByAngle.create().action(
+            gimbalParam,
+            {callback.onSuccess(it)},
+            {e: IDJIError -> callback.onFailure(e)})
+    }
+
+
 
     fun onCleared() {
         KeyManager.getInstance().cancelListen(this)
