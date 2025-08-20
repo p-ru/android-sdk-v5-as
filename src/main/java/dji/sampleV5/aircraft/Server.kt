@@ -68,17 +68,32 @@ class Server : AbstractNodeMain() {
             Log.d(TAG, "landing response: $response")
         }
 
-        connectedNode.newServiceServer<dji_srvs.SetValueRequest, dji_srvs.SetValueResponse>("set_gimbal", dji_srvs.SetValue._TYPE) {
+        connectedNode.newServiceServer<dji_srvs.SetValueRequest, dji_srvs.SetValueResponse>("set_gimbal_pitch", dji_srvs.SetValue._TYPE) {
             request, response ->
 
             val value = request.value.toDouble()
             Log.d(TAG, "received: $value")
+            gimbalParam.duration = 0.0
             gimbalParam.pitch = value
+            gimbalParam.yawIgnored = true
             val result = DroneServiceUtils.setGimbal(gimbalParam, aircraftController)
             response.success = result.success
             response.message = result.message
             Log.d(TAG, "set_gimbal response: $response")
         }
 
+        connectedNode.newServiceServer<dji_srvs.SetValueRequest, dji_srvs.SetValueResponse>("set_gimbal_yaw", dji_srvs.SetValue._TYPE) {
+                request, response ->
+
+            val value = request.value.toDouble()
+            Log.d(TAG, "received: $value")
+            gimbalParam.yawIgnored = false
+            gimbalParam.yaw = value
+            gimbalParam.duration = 1.0
+            val result = DroneServiceUtils.setGimbal(gimbalParam, aircraftController)
+            response.success = result.success
+            response.message = result.message
+            Log.d(TAG, "set_gimbal response: $response")
+        }
     }
 }
