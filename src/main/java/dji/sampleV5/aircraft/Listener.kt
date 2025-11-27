@@ -1,7 +1,6 @@
 package dji.sampleV5.aircraft
 
-//import std_msgs.String
-//import org.ros.node.parameter.ParameterTree
+
 import android.util.Log
 import dji.sampleV5.aircraft.models.TAG
 import dji.sampleV5.aircraft.util.ToastUtils
@@ -32,7 +31,7 @@ class Listener : AbstractNodeMain() {
         rollPitchCoordinateSystem = FlightCoordinateSystem.BODY
     }
     override fun getDefaultNodeName(): GraphName {
-        return GraphName.of("rosjava_tutorial_pubsub/listener")
+        return GraphName.of("MSDK_App/listener")
     }
 
     override fun onStart(connectedNode: ConnectedNode) {
@@ -48,73 +47,81 @@ class Listener : AbstractNodeMain() {
             }
         }
 
-
-        // taking off
-        val takeoffSubscriber = connectedNode.newSubscriber<std_msgs.Empty>("command/takeoff", "std_msgs/Empty")
-        takeoffSubscriber.addMessageListener { newValue ->
-            if (newValue != null) {
-                Log.d(TAG, "take off message received")
-                aircraftController.enableVirtualStick(object : CommonCallbacks.CompletionCallback {
-                    override fun onSuccess() {
-                        ToastUtils.showToast("enableVirtualStick success.")
-                    }
-
-                    override fun onFailure(error: IDJIError) {
-                        ToastUtils.showToast("enableVirtualStick error,$error")
-                    }
-                })
-                aircraftController.enableVirtualStickAdvancedMode()
-                aircraftController.startTakeOff(object : CommonCallbacks.CompletionCallbackWithParam<EmptyMsg> {
-                    override fun onSuccess(t: EmptyMsg?) {
-                        ToastUtils.showToast("start takeOff onSuccess.")
-                    }
-
-                    override fun onFailure(error: IDJIError) {
-                        ToastUtils.showToast("start takeOff onFailure,$error")
-                    }
-                })
-            } else {
-                Log.d(TAG, "no take off message received")
-            }
-
-        }
-
         // controlling
         val subscriber = connectedNode.newSubscriber<geometry_msgs.Twist>("command/cmd_vel", "geometry_msgs/Twist")
         subscriber.addMessageListener { message ->
             Log.d(TAG, "yaw: ${message.angular.x}, x: ${message.linear.x}")
-            params.roll = message.linear.x
-            params.verticalThrottle = message.linear.z
+
+
 
             //params.pitch = - message.linear.y
-            params.pitch = - message.linear.y
             //params.yaw = - message.angular.z
+
+            params.roll = message.linear.x
+            params.pitch = message.linear.y
+            params.verticalThrottle = - message.linear.z
+
+
             params.yaw = message.angular.z
+
+
             aircraftController.sendVirtualStickAdvancedParam(params)
         }
 
-        // landing
-        val landSubscriber = connectedNode.newSubscriber<std_msgs.Empty>("command/land", "std_msgs/Empty")
-        landSubscriber.addMessageListener {
-            aircraftController.disableVirtualStickAdvancedMode()
-            aircraftController.startLanding(object : CommonCallbacks.CompletionCallbackWithParam<EmptyMsg> {
-                override fun onSuccess(t: EmptyMsg?) {
-                    ToastUtils.showToast("start landing onSuccess.")
-                }
+//        // taking off
+//        val takeoffSubscriber = connectedNode.newSubscriber<std_msgs.Empty>("command/takeoff", "std_msgs/Empty")
+//        takeoffSubscriber.addMessageListener { newValue ->
+//            if (newValue != null) {
+//                Log.d(TAG, "take off message received")
+//                aircraftController.enableVirtualStick(object : CommonCallbacks.CompletionCallback {
+//                    override fun onSuccess() {
+//                        ToastUtils.showToast("enableVirtualStick success.")
+//                    }
+//
+//                    override fun onFailure(error: IDJIError) {
+//                        ToastUtils.showToast("enableVirtualStick error,$error")
+//                    }
+//                })
+//                aircraftController.enableVirtualStickAdvancedMode()
+//                aircraftController.startTakeOff(object : CommonCallbacks.CompletionCallbackWithParam<EmptyMsg> {
+//                    override fun onSuccess(t: EmptyMsg?) {
+//                        ToastUtils.showToast("start takeOff onSuccess.")
+//                    }
+//
+//                    override fun onFailure(error: IDJIError) {
+//                        ToastUtils.showToast("start takeOff onFailure,$error")
+//                    }
+//                })
+//            } else {
+//                Log.d(TAG, "no take off message received")
+//            }
+//
+//        }
 
-                override fun onFailure(error: IDJIError) {
-                    ToastUtils.showToast("start landing onFailure,$error")
-                }
-            })
-            aircraftController.disableVirtualStick(object : CommonCallbacks.CompletionCallback {
-                override fun onSuccess() {
-                    ToastUtils.showToast("disableVirtualStick success.")
-                }
 
-                override fun onFailure(error: IDJIError) {
-                    ToastUtils.showToast("disableVirtualStick error,${error})")
-                }
-            })
-        }
+//
+//        // landing
+//        val landSubscriber = connectedNode.newSubscriber<std_msgs.Empty>("command/land", "std_msgs/Empty")
+//        landSubscriber.addMessageListener {
+//            aircraftController.disableVirtualStickAdvancedMode()
+//            aircraftController.startLanding(object : CommonCallbacks.CompletionCallbackWithParam<EmptyMsg> {
+//                override fun onSuccess(t: EmptyMsg?) {
+//                    ToastUtils.showToast("start landing onSuccess.")
+//                }
+//
+//                override fun onFailure(error: IDJIError) {
+//                    ToastUtils.showToast("start landing onFailure,$error")
+//                }
+//            })
+//            aircraftController.disableVirtualStick(object : CommonCallbacks.CompletionCallback {
+//                override fun onSuccess() {
+//                    ToastUtils.showToast("disableVirtualStick success.")
+//                }
+//
+//                override fun onFailure(error: IDJIError) {
+//                    ToastUtils.showToast("disableVirtualStick error,${error})")
+//                }
+//            })
+//        }
     }
 }

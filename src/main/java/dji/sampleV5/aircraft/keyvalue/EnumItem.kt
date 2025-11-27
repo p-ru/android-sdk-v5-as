@@ -46,6 +46,15 @@ class EnumItem : Serializable {
         this.selected = selected
     }
 
+
+    fun hasName(nameToCompare: String): Boolean {
+        return name.equals(nameToCompare, ignoreCase = false)
+    }
+
+    fun hasNameIgnoreCase(nameToCompare: String): Boolean {
+        return name.equals(nameToCompare, ignoreCase = true)
+    }
+
     companion object {
         private const val serialVersionUID = 876323262645176354L
     }

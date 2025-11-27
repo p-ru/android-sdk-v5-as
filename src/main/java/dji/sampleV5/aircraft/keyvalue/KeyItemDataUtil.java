@@ -123,7 +123,7 @@ public class KeyItemDataUtil {
         initList(keyList, LidarKey.getKeyList());
     }
 
-    private static void initList(List<KeyItem<?, ?>> keyList, List<DJIKeyInfo<?>> keyInfoList) {
+    public static void initList(List<KeyItem<?, ?>> keyList, List<DJIKeyInfo<?>> keyInfoList) {
         if (keyList == null || !keyList.isEmpty()){
             return;
         }

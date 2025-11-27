@@ -255,7 +255,8 @@ public class KeyItem<P, R> extends KeyBaseStructure<P , R> implements  Comparabl
                     if (data != null && !(data instanceof EmptyMsg)) {
                         keyOperateCallBack.actionChange(getName() + "【ACTION】== " + getActionTipsStr(pRes) +  "  success: " + data.toString());
                     } else {
-                        keyOperateCallBack.actionChange(getName() + "【ACTION】== "  +  getActionTipsStr(pRes) +  " result: success");
+                        //getName() + "【ACTION】== "  +  getActionTipsStr(pRes) +  " result: success"
+                        keyOperateCallBack.actionChange(getName()+".success");
                     }
                 }
             }
@@ -263,7 +264,8 @@ public class KeyItem<P, R> extends KeyBaseStructure<P , R> implements  Comparabl
             @Override
             public void onFailure(@NonNull IDJIError error) {
                 if (keyOperateCallBack != null) {
-                    keyOperateCallBack.actionChange(getName() +"【ACTION】 ActionErrorMsg==" + error.toString());
+                    //getName() +"【ACTION】 ActionErrorMsg==" + error.toString()
+                    keyOperateCallBack.actionChange(getName()+".failure");
                 }
             }
         });
@@ -320,7 +322,7 @@ public class KeyItem<P, R> extends KeyBaseStructure<P , R> implements  Comparabl
      * @param jsonStr
      * @return
      */
-    private P validPrams(String jsonStr) {
+    public P validPrams(String jsonStr) {
         if (Util.isBlank(jsonStr)) {
             ToastUtils.INSTANCE.showToast("请先设置参数");
             return null;

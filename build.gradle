@@ -201,7 +201,7 @@ dependencies {
         exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
     }
     //dji_srvs
-    implementation (group: 'org.ros.rosjava_messages', name: 'dji_srvs', version: '0.1.0') {
+    implementation (group: 'org.ros.rosjava_messages', name: 'dji_srvs', version: '0.1.1') {
         exclude group: 'com.google.guava', module: 'guava'
         exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
     }
@@ -214,7 +214,7 @@ dependencies {
 
     //implementation files('libs/dji_srvs/0.1.0/dji_srvs-0.1.0.jar')
     implementation 'com.google.guava:guava:32.1.2-android'
-
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1"
 }
 
 

@@ -24,8 +24,9 @@ import java.net.URI
  *
  * Copyright (c) 2022, DJI All Rights Reserved.
  */
-
-class DJIAircraftMainActivity : RosActivity("Pubsub Tutorial", "Pubsub Tutorial",  URI.create("http://192.168.43.6:11311")) {
+//http://192.168.43.76:11311
+//http://192.168.3.139:11311
+class DJIAircraftMainActivity : RosActivity("Pubsub Tutorial", "Pubsub Tutorial",  URI.create("http://192.168.43.76:11311")) {
     private var talker: Talker? = null
     private var listener: Listener? = null
     private var server: Server? = null
@@ -43,13 +44,13 @@ class DJIAircraftMainActivity : RosActivity("Pubsub Tutorial", "Pubsub Tutorial"
     }
 
     override fun init(nodeMainExecutor: NodeMainExecutor?) {
-        nodeMainExecutorService.rosHostname = "192.168.43.129"
+        //nodeMainExecutorService.rosHostname = "192.168.43.129"
         talker = Talker()
         listener = Listener()
         server = Server()
 
 
-        //if(masterUri.toString() != "http://192.168.3.139:11311"){nodeMainExecutorService.rosHostname = "192.168.43.129"}
+        if(masterUri.toString() == "http://192.168.43.76:11311"){nodeMainExecutorService.rosHostname = "192.168.43.129"}
         val nodeConfiguration = NodeConfiguration.newPublic(rosHostname)
 
         nodeConfiguration.setMasterUri(masterUri)

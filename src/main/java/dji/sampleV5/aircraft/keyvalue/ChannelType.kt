@@ -35,12 +35,12 @@ enum class ChannelType(name: String) {
     /**
      * Flight Control
      */
-    CHANNEL_TYPE_FLIGHT_CONTROL("FLIGHT CONTROL"),
+    CHANNEL_TYPE_FLIGHT_CONTROL("FLIGHT_CONTROL"),
 
     /**
      * Remote Controller
      */
-    CHANNEL_TYPE_REMOTE_CONTROLLER("REMOTE CONTROLLER"),
+    CHANNEL_TYPE_REMOTE_CONTROLLER("REMOTE_CONTROLLER"),
 
     /**
      * BLE
@@ -50,12 +50,12 @@ enum class ChannelType(name: String) {
     /**
      * RTK
      */
-    CHANNEL_TYPE_RTK_BASE_STATION("RTK BASE STATION"),
+    CHANNEL_TYPE_RTK_BASE_STATION("RTK_BASE_STATION"),
 
     /**
      * RTK
      */
-    CHANNEL_TYPE_RTK_MOBILE_STATION("RTK MOBILE STATION"),
+    CHANNEL_TYPE_RTK_MOBILE_STATION("RTK_MOBILE_STATION"),
 
     /**
      * Product
@@ -65,7 +65,7 @@ enum class ChannelType(name: String) {
     /**
      * OcuSync
      */
-    CHANNEL_TYPE_OCU_SYNC("OCU SYNC"),
+    CHANNEL_TYPE_OCU_SYNC("OCU_SYNC"),
 
     /**
      * Radar
@@ -77,7 +77,7 @@ enum class ChannelType(name: String) {
     /**
      * Mobile Network
      */
-    CHANNEL_TYPE_MOBILE_NETWORK("MOBILE NETWORK"),
+    CHANNEL_TYPE_MOBILE_NETWORK("MOBILE_NETWORK"),
 
 
     /**

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import dji.sampleV5.aircraft.R
 import dji.sampleV5.aircraft.databinding.FragmentKeyListBinding
+import dji.sampleV5.aircraft.keyvalue.KeyItem
 import dji.sampleV5.aircraft.keyvalue.KeyItemHelper.processSubListLogic
 import dji.sampleV5.aircraft.util.ToastUtils.showToast
 import dji.sampleV5.aircraft.util.Util
@@ -140,7 +142,7 @@ class KeyValueFragment : DJIFragment(), View.OnClickListener {
             setDataWithCapability(binding?.ivCapability?.isChecked ?: false)
             Schedulers.single().scheduleDirect {
                 if (totalKeyCount == null || capabilityKeyCount == null) {
-                    totalKeyCount = dji.sampleV5.aircraft.keyvalue.KeyItemDataUtil.getAllKeyListCount();
+                    totalKeyCount = dji.sampleV5.aircraft.keyvalue.KeyItemDataUtil.getAllKeyListCount()
                     capabilityKeyCount = CapabilityManager.getInstance().getCapabilityKeyCount(it.productType.name)
                 }
             }
@@ -271,6 +273,12 @@ class KeyValueFragment : DJIFragment(), View.OnClickListener {
      * @param keyItem
      */
     private fun initKeyInfo(keyItem: dji.sampleV5.aircraft.keyvalue.KeyItem<*, *>) {
+        Log.d(dji.sampleV5.aircraft.models.TAG, "${keyItem.buildParamFromJsonStr(keyItem.paramJsonStr)}")
+
+
+        Log.d(dji.sampleV5.aircraft.models.TAG, "${keyItem.param}")
+
+
         currentKeyItem = keyItem
         currentKeyItem!!.setKeyOperateCallBack(keyItemOperateCallBack)
         binding?.layoutKeyOperate?.tvName?.text = keyItem.name
@@ -359,6 +367,14 @@ class KeyValueFragment : DJIFragment(), View.OnClickListener {
         currentKeyTypeList.clear()
         currentKeyItemList.clear()
         var tips: String? = ""
+
+        Log.d(dji.sampleV5.aircraft.models.TAG, "currentChannelType: $currentChannelType")
+        val capabilityChannelList = arrayOf(
+            dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_BATTERY, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_AIRLINK, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_CAMERA,
+            dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_GIMBAL, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_REMOTE_CONTROLLER, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_FLIGHT_CONTROL
+        )
+        //Log.d(dji.sampleV5.aircraft.models.TAG, capabilityChannelList.contentToString())
+
         when (currentChannelType) {
             dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_BATTERY -> {
                 dji.sampleV5.aircraft.keyvalue.KeyItemDataUtil.initBatteryKeyList(batteryKeyList)
@@ -388,7 +404,19 @@ class KeyValueFragment : DJIFragment(), View.OnClickListener {
                 tips = Util.getString(R.string.flight_control)
                 dji.sampleV5.aircraft.keyvalue.KeyItemDataUtil.initFlightControllerKeyList(flightControlKeyList)
                 currentKeyItemList.addAll(flightControlKeyList)
+                Log.d(dji.sampleV5.aircraft.models.TAG, "currentKeyItemList: ${currentKeyItemList.toString()}")
+                var target: KeyItem<*, *>? = null
+                for (item in currentKeyItemList) {
+                    if ("ADSBSwitch" == item.name) {
+                        target = item
+                        break
+                    }
+                }
+
+                Log.d(dji.sampleV5.aircraft.models.TAG, "${target?.param}")
             }
+
+
 
             dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_AIRLINK -> {
                 tips = Util.getString(R.string.airlink)
@@ -662,6 +690,7 @@ class KeyValueFragment : DJIFragment(), View.OnClickListener {
             dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_BATTERY, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_AIRLINK, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_CAMERA,
             dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_GIMBAL, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_REMOTE_CONTROLLER, dji.sampleV5.aircraft.keyvalue.ChannelType.CHANNEL_TYPE_FLIGHT_CONTROL
         )
+
         if (isCapabilitySwitchOn()) {
             showChannelList = capabilityChannelList.toMutableList()
         } else {
