@@ -105,6 +105,15 @@ android {
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
+
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            // Replace the missing "ghost" artifacts with the actual standard Apache libraries
+            substitute module('org.apache.commons:com.springsource.org.apache.commons.codec') using module('commons-codec:commons-codec:1.10')
+            substitute module('org.apache.commons:com.springsource.org.apache.commons.io') using module('commons-io:commons-io:2.6')
+            substitute module('org.apache.commons:com.springsource.org.apache.commons.lang') using module('commons-lang:commons-lang:2.6')
+        }
+    }
 }
 
 dependencies {
@@ -196,10 +205,10 @@ dependencies {
         exclude group: 'com.google.guava', module: 'guava'
         exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
     }
-    implementation (group: 'com.github.rosjava', name: 'rosjava_actionlib', version: '2024.04.04.01') {
-        exclude group: 'com.google.guava', module: 'guava'
-        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
-    }
+//    implementation (group: 'com.github.rosjava', name: 'rosjava_actionlib', version: '2024.04.04.01') {
+//        exclude group: 'com.google.guava', module: 'guava'
+//        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+//    }
     //dji_srvs
     implementation (group: 'org.ros.rosjava_messages', name: 'dji_srvs', version: '0.1.1') {
         exclude group: 'com.google.guava', module: 'guava'
@@ -207,10 +216,10 @@ dependencies {
     }
 
 
-    implementation (group: 'org.ros.rosjava_messages', name: 'actionlib_msgs', version: '1.12.7') {
-        exclude group: 'com.google.guava', module: 'guava'
-        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
-    }
+//    implementation (group: 'org.ros.rosjava_messages', name: 'actionlib_msgs', version: '1.12.7') {
+//        exclude group: 'com.google.guava', module: 'guava'
+//        exclude group: 'org.apache.ws.commons', module: 'ws-commons-util'
+//    }
 
     //implementation files('libs/dji_srvs/0.1.0/dji_srvs-0.1.0.jar')
     implementation 'com.google.guava:guava:32.1.2-android'
